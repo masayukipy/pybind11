@@ -2,19 +2,20 @@
 
 namespace py = pybind11;
 
-struct Pet {
-    Pet(const std::string &name) : name(name) { }
-    void setName(const std::string &name_) { name = name_; }
-    const std::string &getName() const { return name; }
-
-    std::string name;
+class Pet {
+    public:
+        Pet(const std::string &name) : name(name) { }
+        void setName(const std::string &name_) { name = name_; }
+        const std::string &getName() const { return name; }
+    private:
+        std::string name;
 };
 
 
 PYBIND11_MODULE(exam, m) {
     py::class_<Pet>(m, "Pet")
         .def(py::init<const std::string &>())
-        .def_readwrite("name", &Pet::name)
+        .def_property("name", &Pet::getName, &Pet::setName)
         .def("setName", &Pet::setName)
         .def("getName", &Pet::getName);
 }
